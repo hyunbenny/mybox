@@ -1,0 +1,59 @@
+debug: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  level:
+    com.hyunbenny.mybox: debug
+    org.springframework.web.servlet: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mybox
+    username: myboxUser
+    password: myboxUser1234
+
+  jpa:
+    # ???? ?????? ??? ?? ?? ?? ??
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+    open-in-view: false # OSIV ?? ??
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+      hibernate.default_batch_fetch_size: 100
+
+  sql:
+    init:
+      mode: always
+  data:
+    rest:
+      base-path: /api
+      detection-strategy: annotated
+
+  thymeleaf3:
+    decoupled-logic: true
+
+#  thymeleaf:
+#    cache: true
+
+---
+
+#??? DB
+#spring:
+#  config.activate.on-profile: testdb
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:board;mode=mysql
+#  sql:
+#    init:
+#      mode: always
+#  test.database.replace: none # ????? ???? AutoConfigureTestDatabase? ?? ??
+

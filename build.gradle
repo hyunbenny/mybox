@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.9'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.hyunbenny'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.querydsl:querydsl-jpa:5.0.0'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
+
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// Querydsl 설정부분
+/** 원래 Qclass는 build 디렉토리 안에 생성되는데 main으로 꺼내오기 위해서 설정하기 위함
+ * 굳이 왜?? -> IDE(인텔리제이, 이클립스)를 이용해서 빌드할 때의 스캔 영역과 Gradle이 빌드할 때의 스캔영역이 달라서
+ *  중복 스캔이 일어나는 문제가 있어서 Qclass의 위치를 강제로 main으로 옮긴 것이다.
+ */
+def generated = 'src/main/generated'
+
+// querydsl QClass 파일 생성 위치 지정
+tasks.withType(JavaCompile){
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+// java source set에 querydsl QClass 위치 추가
+sourceSets{
+    main.java.srcDirs += [generated]
+}
+
+// gradle clean 할 때, QClass 디렉토리 삭제
+clean{
+    delete file(generated)
+}
+
