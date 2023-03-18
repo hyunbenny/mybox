@@ -56,3 +56,9 @@ clean{
     delete file(generated)
 }
 
+// build시 생성되는 jar파일의 이름 지정
+bootJar{
+    archivesBaseName = 'mybox'
+    archiveFileName = 'mybox.jar'
+    archiveVersion = '0.0.0'
+}
