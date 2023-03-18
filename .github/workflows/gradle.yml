@@ -55,6 +55,13 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: clean build
+        
+    - name: Docker build
+      run: |
+        docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
+        docker build -t mybox .
+        docker tag mybox ${{ secrets.USERNAME }}/mybox:${GITHUB_SHA::7}
+        docker push ${{ secrets.USERNAME }}/mybox:${GITHUB_SHA::7}
 
 
 
