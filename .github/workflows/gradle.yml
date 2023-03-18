@@ -60,8 +60,8 @@ jobs:
       run: |
         docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
         docker build -t mybox .
-        docker tag mybox hbcho90/mybox:${GITHUB_SHA::7}
-        docker push hbcho90/mybox:${GITHUB_SHA::7}
+        docker tag mybox ${{ secrets.USERNAME }}/mybox:${GITHUB_SHA::7}
+        docker push ${{ secrets.USERNAME }}/mybox:${GITHUB_SHA::7}
 
 
 
