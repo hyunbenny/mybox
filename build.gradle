@@ -56,6 +56,11 @@ clean{
     delete file(generated)
 }
 
+// plain.jar 파일 생성방지를 위해 추가
+jar{
+    enabled = false
+}
+
 // build시 생성되는 jar파일의 이름 지정
 bootJar{
     archivesBaseName = 'mybox'
