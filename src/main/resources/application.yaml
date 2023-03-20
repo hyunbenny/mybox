@@ -20,11 +20,10 @@ spring:
     password: myboxUser1234
 
   jpa:
-    # ???? ?????? ??? ?? ?? ?? ??
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: create
-    open-in-view: false # OSIV ?? ??
+    open-in-view: false # OSIV
     show-sql: true
     properties:
       hibernate.format_sql: true
@@ -41,19 +40,5 @@ spring:
   thymeleaf3:
     decoupled-logic: true
 
-#  thymeleaf:
-#    cache: true
-
----
-
-#??? DB
-#spring:
-#  config.activate.on-profile: testdb
-#  datasource:
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:mem:board;mode=mysql
-#  sql:
-#    init:
-#      mode: always
-#  test.database.replace: none # ????? ???? AutoConfigureTestDatabase? ?? ??
-
+jwt:
+  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
