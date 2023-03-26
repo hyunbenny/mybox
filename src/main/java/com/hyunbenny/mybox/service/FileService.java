@@ -2,6 +2,7 @@ package com.hyunbenny.mybox.service;
 
 import com.hyunbenny.mybox.dto.FileDto;
 import com.hyunbenny.mybox.dto.FolderDto;
+import com.hyunbenny.mybox.dto.response.FolderListResponse;
 import com.hyunbenny.mybox.entity.FileInfo;
 import com.hyunbenny.mybox.entity.FolderInfo;
 import com.hyunbenny.mybox.entity.UserAccount;
@@ -31,20 +32,21 @@ public class FileService {
     private final FolderRepository folderRepository;
     private final S3FileManager s3FileManager;
 
+
     @Transactional(readOnly = true)
-    public List<FolderDto> getFolderList(Long folderNo, String username) {
+    public FolderListResponse getList(Long folderNo, String username) {
         UserAccount userAccount = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다. : " + username));
         FolderInfo findFolderInfo = folderRepository.findByFolderNoAndUserAccount_UserNo(folderNo, userAccount.getUserNo()).orElseThrow(() -> new IllegalArgumentException("해당 폴더가 존재하지 않습니다."));
-
-        return findFolderInfo.getChildFolders().stream().map(folder -> new FolderDto(folder.getFolderName())).toList();
-    }
-
-    @Transactional(readOnly = true)
-    public List<FileDto> getFileList(Long folderNo, String username) {
-        UserAccount userAccount = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다. : " + username));
         List<FileInfo> findFiles = fileRepository.findByFolderInfo_FolderNoAndUserAccount_UserNo(folderNo, userAccount.getUserNo());
 
-        return findFiles.stream().map(f -> new FileDto().fromEntity(f)).toList();
+        FolderListResponse listResponse = new FolderListResponse();
+        List<FolderDto> folders = findFolderInfo.getChildFolders().stream().map(folder -> new FolderDto(folder.getFolderName())).toList();
+        List<FileDto> files = findFiles.stream().map(f -> new FileDto().fromEntity(f)).toList();
+
+        listResponse.setFolders(folders);
+        listResponse.setFiles(files);
+
+        return listResponse;
     }
 
     @Transactional
