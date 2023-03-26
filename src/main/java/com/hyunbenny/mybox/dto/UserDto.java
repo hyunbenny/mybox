@@ -12,14 +12,14 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDto {
 
-    private Long id;
+    private Long userNo;
     private String userId;
     private String username;
     private List<String> roles = new ArrayList<>();
 
     @Builder
-    public UserDto(Long id, String userId, String username, List<String> roles) {
-        this.id = id;
+    public UserDto(Long userNo, String userId, String username, List<String> roles) {
+        this.userNo = userNo;
         this.userId = userId;
         this.username = username;
         this.roles = roles;
@@ -27,7 +27,7 @@ public class UserDto {
 
     public UserDto fromEntity(UserAccount userAccount) {
         return UserDto.builder()
-                .id(userAccount.getId())
+                .userNo(userAccount.getUserNo())
                 .userId(userAccount.getUserId())
                 .username(userAccount.getUsername())
                 .roles(userAccount.getRoles())

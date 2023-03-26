@@ -111,7 +111,7 @@ public class UserRepositoryTest {
         List<UserAccount> users = userRepository.findAll();
 
         // when
-        userRepository.deleteById(users.get(0).getId());
+        userRepository.deleteById(users.get(0).getUserNo());
         List<UserAccount> userListAfterDeleteUser = userRepository.findAll();
 
         // then

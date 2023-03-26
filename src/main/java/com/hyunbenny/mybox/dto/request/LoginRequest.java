@@ -1,11 +1,9 @@
 package com.hyunbenny.mybox.dto.request;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-
-import javax.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Getter
 @ToString
