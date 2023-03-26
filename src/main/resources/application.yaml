@@ -29,16 +29,34 @@ spring:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
 
+#  servlet:
+#    multipart:
+#      enabled: true
+#      file-size-threshold: 10MB
+#      max-file-size: 1024MB
+#      max-request-size: 1024MB
+
   sql:
     init:
       mode: always
-  data:
-    rest:
-      base-path: /api
-      detection-strategy: annotated
-
-  thymeleaf3:
-    decoupled-logic: true
+#  data:
+#    rest:
+#      base-path: /api
+#      detection-strategy: annotated
 
 jwt:
   secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
+    region:
+      static: ap-southeast-2
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: hyunbenny-mybox

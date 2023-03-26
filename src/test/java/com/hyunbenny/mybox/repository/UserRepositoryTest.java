@@ -34,6 +34,7 @@ public class UserRepositoryTest {
     void setUserData() {
         for (int i = 1; i <= 10; i++) {
             userRepository.save(UserAccount.builder()
+                            .userNo(Long.parseLong(i+ ""))
                             .userId("hyunbenny" + i)
                             .password("1234")
                             .username("hyunbin" + i)
@@ -51,6 +52,7 @@ public class UserRepositoryTest {
     void insertTest() {
         // given
         UserAccount userAccount = UserAccount.builder()
+                .userNo(999L)
                 .userId("hyunbenny")
                 .password("1234")
                 .username("hyunbin")
