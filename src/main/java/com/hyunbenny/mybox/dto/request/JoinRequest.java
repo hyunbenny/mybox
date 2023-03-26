@@ -1,10 +1,9 @@
 package com.hyunbenny.mybox.dto.request;
 
 import com.hyunbenny.mybox.entity.UserAccount;
-import com.sun.istack.NotNull;
 import lombok.*;
+import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotBlank;
 import java.util.Collections;
 
 @Getter
