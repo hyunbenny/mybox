@@ -5,8 +5,10 @@ import com.hyunbenny.mybox.dto.common.TokenInfo;
 import com.hyunbenny.mybox.dto.request.JoinRequest;
 import com.hyunbenny.mybox.dto.request.LoginRequest;
 import com.hyunbenny.mybox.dto.request.PasswordModifyRequest;
+import com.hyunbenny.mybox.entity.FolderInfo;
 import com.hyunbenny.mybox.entity.UserAccount;
 import com.hyunbenny.mybox.exception.InvalidRequestException;
+import com.hyunbenny.mybox.repository.FolderRepository;
 import com.hyunbenny.mybox.repository.UserRepository;
 import com.hyunbenny.mybox.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -23,15 +26,23 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserRepository userRepository;
+    private final FolderRepository folderRepository;
 
+    @Transactional
     public UserDto join(JoinRequest joinRequest) {
         String encodedPassword = passwordEncoder.encode(joinRequest.getPassword());
         UserAccount userAccount = joinRequest.toEntity(encodedPassword);
+
+        // 유저 생성하면서 루트 폴더 생성
         UserAccount savedUser = userRepository.save(userAccount);
+        folderRepository.save(FolderInfo.builder()
+                        .userAccount(savedUser)
+                        .folderName("/")
+                        .build());
 
         return new UserDto().fromEntity(savedUser);
     }

@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
@@ -52,6 +53,17 @@ public class UserAccount extends AuditingFields implements UserDetails {
         this.password = newPassword;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserAccount that)) return false;
+        return Objects.equals(userNo, that.userNo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userNo);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
