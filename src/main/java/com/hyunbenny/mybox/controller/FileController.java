@@ -35,16 +35,12 @@ public class FileController {
     @GetMapping("/list")
     public ResponseEntity getFileList(@RequestParam(value = "folder_no") Long folderNo,
                                       @AuthenticationPrincipal UserDetails userDetails) {
-        List<FolderDto> folderList = fileService.getFolderList(folderNo, userDetails.getUsername());
-        List<FileDto> fileList = fileService.getFileList(folderNo, userDetails.getUsername());
 
-        FolderListResponse resp = new FolderListResponse();
-        resp.setFolders(folderList);
-        resp.setFiles(fileList);
+        FolderListResponse response = fileService.getList(folderNo, userDetails.getUsername());
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(resp);
+                .body(response);
     }
 
     @PostMapping("/upload")
@@ -56,7 +52,6 @@ public class FileController {
         try {
             savedFile = fileService.uploadFile(folderNo, userDetails.getUsername(), multipartFile);
         } catch (Exception e) {
-            log.error("파일 업로드 실패 : {}", e);
             new S3Exception("FILE UPLOAD FAILED");
         }
         return ResponseEntity
@@ -69,8 +64,7 @@ public class FileController {
         Map<String, Object> resultMap = new HashMap<>();
         try {
             resultMap = fileService.downloadFile(fileName);
-        } catch (IOException e) {
-            log.error("파일 다운로드 실패");
+        } catch (Exception e) {
             new S3Exception("FILE DOWNLOAD FAILED");
         }
 
@@ -87,7 +81,6 @@ public class FileController {
         try {
             fileService.deleteFile(fileName);
         } catch (Exception e) {
-            log.error("파일 삭제 실패");
             new S3Exception("FILE DELETE FAILED");
         }
         return ResponseEntity
