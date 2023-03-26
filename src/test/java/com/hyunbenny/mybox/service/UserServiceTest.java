@@ -77,7 +77,7 @@ class UserServiceTest {
         String encodedHello = "$2a$10$EcWqhK39BvIXnrbaPRIz7eTj0VeiKsh6l5iCUlh3jevwdKTRbzdz6";
         String encodedHello123 = "$2a$10$EcWqhK39BvIXnrbaPRIz7eTj0VeiKsh6l5iCUlh121aadKdsfad21a";
         UserAccount user = UserAccount.builder()
-                .id(1L)
+                .userNo(1L)
                 .userId("hyunbenny90")
                 .password(encodedHello)
                 .username("hyunbenny")
