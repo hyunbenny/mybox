@@ -2,7 +2,9 @@ package com.hyunbenny.mybox.service;
 
 import com.hyunbenny.mybox.dto.request.JoinRequest;
 import com.hyunbenny.mybox.dto.request.PasswordModifyRequest;
+import com.hyunbenny.mybox.entity.FolderInfo;
 import com.hyunbenny.mybox.entity.UserAccount;
+import com.hyunbenny.mybox.repository.FolderRepository;
 import com.hyunbenny.mybox.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,16 +34,23 @@ class UserServiceTest {
     private UserRepository userRepository;
 
     @Mock
+    private FolderRepository folderRepository;
+
+    @Mock
     private PasswordEncoder passwordEncoder;
 
     @DisplayName("유저정보가 정상적으로 저장된다.")
     @Test
     void saveTest() {
         // Given
-        given(userRepository.save(any(UserAccount.class))).willReturn(UserAccount.builder().userId("hyunbenny90")
+        UserAccount user = UserAccount.builder()
+                .userNo(1L)
+                .userId("hyunbenny90")
                 .password("hello1234")
                 .username("hyunbenny")
-                .build());
+                .build();
+
+        given(userRepository.save(any(UserAccount.class))).willReturn(user);
 
         // When
         JoinRequest request = createJoinRequest();
@@ -49,6 +58,7 @@ class UserServiceTest {
 
         // Then
         then(userRepository).should().save(any(UserAccount.class));
+        then(folderRepository).should().save(any(FolderInfo.class));
     }
 
     @DisplayName("유저의 id가 주어지면 유저의 정보를 조회한다.")
